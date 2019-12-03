@@ -1,6 +1,5 @@
 #include "ServerThread.h"
 #include "SocketThread.h"
-#include "clientlist.h"
 #include <list>
 
 using namespace Sync;

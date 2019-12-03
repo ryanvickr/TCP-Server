@@ -1,6 +1,5 @@
 #include "SocketThread.h"
 #include "ServerThread.h"
-#include "clientlist.h"
 using namespace Sync;
 std::vector<std::string> msgs;
 SocketThread::SocketThread(Socket& socket, bool& terminate)

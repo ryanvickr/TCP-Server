@@ -3,6 +3,7 @@
         "functional": "cpp",
         "ostream": "cpp",
         "vector": "cpp",
-        "list": "cpp"
+        "list": "cpp",
+        "algorithm": "cpp"
     }
 }

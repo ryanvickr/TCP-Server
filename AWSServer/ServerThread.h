@@ -9,6 +9,12 @@
 #include <list>
 #include <vector>
 #include <string>
+#include <list>
+
+using namespace Sync;
+
+extern std::list<Socket&> clients;
+extern std::list<Socket&>::iterator clientIterator;
 
 class SocketThread;
 
