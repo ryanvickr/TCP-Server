@@ -1,5 +1,6 @@
 #include "SocketThread.h"
 #include "ServerThread.h"
+#include "clientlist.h"
 using namespace Sync;
 std::vector<std::string> msgs;
 SocketThread::SocketThread(Socket& socket, bool& terminate)
@@ -40,6 +41,15 @@ long SocketThread::ThreadMain()
                     std::string data_str = data.ToString();
                     this->username=data_str;
                     std::cout<<data_str<<std::endl;
+                    
+                    // loop through clients and write to their sockets.
+                    for (clientIterator = clients.begin(); clientIterator != clients.end; clientIterator++)
+                    {
+                        Socket& currentSocket = (*clientIterator);
+                        currentSocket.Write(ByteArray(data_str));
+                    }
+                    
+                    // socket.Write(ByteArray(data_str)); //send message back to user
                 }else {
                     
                     for(int j=0;j<msgs.size();j++){
