@@ -139,7 +139,10 @@ public class ChatClientController {
                 {
                     socketInput.read(readBuffer);
                     String decoded = new String(readBuffer, StandardCharsets.UTF_8).trim();
-                    if (decoded == "-disconnect") {
+                    if (decoded.contains("-disconnect")) {
+                        System.out.println("Server closed.");
+                        textfieldChat.textProperty().setValue(textfieldChat.textProperty().get() +
+                                "\nServer closed connection.");
                         break;
                     }
                     System.out.println("Got:" + decoded);

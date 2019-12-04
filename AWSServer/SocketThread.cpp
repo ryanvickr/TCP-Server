@@ -76,7 +76,5 @@ long SocketThread::ThreadMain()
         i++;
     }
     
-    socket.Write(ByteArray("-disconnect"));
-    sleep(1);
     return 0;
 }
