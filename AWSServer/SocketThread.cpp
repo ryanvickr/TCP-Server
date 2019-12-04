@@ -32,23 +32,52 @@ long SocketThread::ThreadMain()
                 std::string data_str = data.ToString();
                 this->username = data_str;
                 std::cout<<data_str<<std::endl;
-                socket.Write("Username is: " + this->username);
+                socket.Write(ByteArray("Username is: " + this->username));
                 firstRun = false;
             }
             //normal execution (after getting username)
             else {
                 //wipe bytearray
-                this->data.v.clear();
+                data.v.clear();
+
                 socket.Read(data);
                 std::string data_str = data.ToString();
-                std::cout << this->username << ": " << data_str << std::endl;
-                    
+                bool disconnect = false;
+                if (data_str == "-disconnect")
+                {
+                    //remove from clients list and close this thread
+                    for (int j = 0; j < clients.size(); j++)
+                    {
+                        Socket currentSock = clients.back();
+                        clients.pop_back();
+                        if (currentSock.GetFD() == socket.GetFD())
+                        {
+                            std::cout << this->username << " has disconnected." << std::endl;
+                            socket.Close();
+                            disconnect = true;
+                            break;
+                        }
+                        else {
+                            clients.push_front(currentSock);
+                        }
+                    }
+                }
+                else if (data_str.empty())
+                {
+                    continue;
+                }
+                
+                if (disconnect) break;
+                
+
+                std::cout << data_str << std::endl;
+                
                 // loop through clients and write to their sockets.
                 for (int j = 0; j < clients.size(); j++)
                 {
+                    
                     Socket currentSocket = clients.back();
                     currentSocket.Write(ByteArray(data_str));
-
                     clients.pop_back();
                     clients.push_front(currentSocket);
                 }

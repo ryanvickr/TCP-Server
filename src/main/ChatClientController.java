@@ -89,7 +89,7 @@ public class ChatClientController {
     void actionDisconnect(ActionEvent event) {
         try
         {
-            sendString(" is disconnecting from server.");
+            sendString("-disconnect");
             theSocket.close();
         }
         catch(Exception ex)

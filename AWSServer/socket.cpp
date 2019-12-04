@@ -1,4 +1,6 @@
 #include <strings.h>
+#include <string.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <iostream>
 #include <errno.h>
