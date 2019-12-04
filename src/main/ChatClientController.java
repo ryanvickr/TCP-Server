@@ -90,6 +90,7 @@ public class ChatClientController {
         try
         {
             sendString("-disconnect");
+            Thread.sleep(2000);
             theSocket.close();
         }
         catch(Exception ex)
@@ -138,9 +139,13 @@ public class ChatClientController {
                 {
                     socketInput.read(readBuffer);
                     String decoded = new String(readBuffer, StandardCharsets.UTF_8).trim();
+                    if (decoded == "-disconnect") {
+                        break;
+                    }
                     System.out.println("Got:" + decoded);
                     textfieldChat.textProperty().setValue(textfieldChat.textProperty().get() + "\n" + decoded);
                 }
+                theSocket.close();
             }
             catch (Exception e)
             {

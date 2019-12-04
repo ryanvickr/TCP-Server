@@ -28,10 +28,11 @@ long SocketThread::ThreadMain()
             {
                 socket.Write(ByteArray("Enter username!"));
 
+
                 socket.Read(data);
                 std::string data_str = data.ToString();
                 this->username = data_str;
-                std::cout<<data_str<<std::endl;
+                std::cout<<data_str<< " SocketFD: " << socket.GetFD() << std::endl;
                 socket.Write(ByteArray("Username is: " + this->username));
                 firstRun = false;
             }
@@ -45,39 +46,22 @@ long SocketThread::ThreadMain()
                 bool disconnect = false;
                 if (data_str == "-disconnect")
                 {
-                    //remove from clients list and close this thread
-                    for (int j = 0; j < clients.size(); j++)
-                    {
-                        Socket currentSock = clients.back();
-                        clients.pop_back();
-                        if (currentSock.GetFD() == socket.GetFD())
-                        {
-                            std::cout << this->username << " has disconnected." << std::endl;
-                            socket.Close();
-                            disconnect = true;
-                            break;
-                        }
-                        else {
-                            clients.push_front(currentSock);
-                        }
-                    }
+                    clients.remove(socket);
+                    return 0;
                 }
                 else if (data_str.empty())
                 {
                     continue;
                 }
                 
-                if (disconnect) break;
-                
 
-                std::cout << data_str << std::endl;
+                std::cout << data_str << " Socket: " << socket.GetFD() << std::endl;
                 
                 // loop through clients and write to their sockets.
                 for (int j = 0; j < clients.size(); j++)
                 {
-                    
                     Socket currentSocket = clients.back();
-                    currentSocket.Write(ByteArray(data_str));
+                    currentSocket.Write(this->username + data_str);
                     clients.pop_back();
                     clients.push_front(currentSocket);
                 }
@@ -91,6 +75,8 @@ long SocketThread::ThreadMain()
 
         i++;
     }
-
+    
+    socket.Write(ByteArray("-disconnect"));
+    sleep(1);
     return 0;
 }
