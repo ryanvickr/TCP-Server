@@ -4,9 +4,6 @@
 
 using namespace Sync;
 
-std::list<Socket&> clients;
-std::list<Socket&>::iterator clientIterator;
-
 ServerThread::ServerThread(SocketServer& server)
 : server(server)
 {}
@@ -36,6 +33,8 @@ ServerThread::~ServerThread()
 
 long ServerThread::ThreadMain()
 {   
+    std::list<Socket> clients;
+
     while(true)
     {
         try
@@ -46,8 +45,8 @@ long ServerThread::ThreadMain()
 
             // Pass a reference to this pointer into a new socket thread
             Socket& socketReference = *newConnection;
-            socketThreads.push_back(new SocketThread(socketReference, terminate));
             clients.push_back(socketReference); //add client to list
+            socketThreads.push_back(new SocketThread(socketReference, terminate, clients));
         }
         catch (TerminationException terminationException)
         {

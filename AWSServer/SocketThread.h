@@ -16,9 +16,10 @@ private:
     Sync::ByteArray data;
     std::string username;
     bool& terminate;
+    std::list<Sync::Socket>& clients;
 
 public:
-    SocketThread(Sync::Socket& socket, bool& terminate);
+    SocketThread(Sync::Socket& socket, bool& terminate, std::list<Sync::Socket>& clients);
     ~SocketThread();
     Sync::Socket& GetSocket();
     virtual long ThreadMain();

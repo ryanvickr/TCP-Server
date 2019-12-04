@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 public class ChatClientController {
 
@@ -88,6 +89,7 @@ public class ChatClientController {
     void actionDisconnect(ActionEvent event) {
         try
         {
+            sendString(" is disconnecting from server.");
             theSocket.close();
         }
         catch(Exception ex)
@@ -107,9 +109,9 @@ public class ChatClientController {
     {
         try
         {
-            if (!textfieldMessage.getText().isEmpty()) {
+            if (!s.isEmpty()) {
                 socketOutput.write(s.getBytes());
-                System.out.println("Sent:"+s);
+                System.out.println("Sent:" + s);
             }
         }
         catch(Exception e)
@@ -135,7 +137,7 @@ public class ChatClientController {
                 while(true)
                 {
                     socketInput.read(readBuffer);
-                    String decoded = new String(readBuffer, "UTF-8");
+                    String decoded = new String(readBuffer, StandardCharsets.UTF_8).trim();
                     System.out.println("Got:" + decoded);
                     textfieldChat.textProperty().setValue(textfieldChat.textProperty().get() + "\n" + decoded);
                 }
