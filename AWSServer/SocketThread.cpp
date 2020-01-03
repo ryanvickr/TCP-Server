@@ -56,12 +56,18 @@ long SocketThread::ThreadMain()
                 
 
                 std::cout << data_str << " Socket: " << socket.GetFD() << std::endl;
+
+                if (data_str.length < 10)
+                {
+                    data_str = data_str + "             ";
+                }
+                
                 
                 // loop through clients and write to their sockets.
                 for (int j = 0; j < clients.size(); j++)
                 {
                     Socket currentSocket = clients.back();
-                    currentSocket.Write(this->username + data_str);
+                    currentSocket.Write(this->username + ": " + data_str);
                     clients.pop_back();
                     clients.push_front(currentSocket);
                 }

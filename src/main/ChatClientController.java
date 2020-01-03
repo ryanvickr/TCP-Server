@@ -90,8 +90,10 @@ public class ChatClientController {
         try
         {
             sendString("-disconnect");
-            Thread.sleep(2000);
+            Thread.sleep(1000);
             theSocket.close();
+
+            textfieldChat.appendText("\n---Disconnected from server---");
         }
         catch(Exception ex)
         {
@@ -141,12 +143,11 @@ public class ChatClientController {
                     String decoded = new String(readBuffer, StandardCharsets.UTF_8).trim();
                     if (decoded.contains("-disconnect")) {
                         System.out.println("Server closed.");
-                        textfieldChat.textProperty().setValue(textfieldChat.textProperty().get() +
-                                "\nServer closed connection.");
+                        textfieldChat.appendText("\nServer closed connection.");
                         break;
                     }
                     System.out.println("Got:" + decoded);
-                    textfieldChat.textProperty().setValue(textfieldChat.textProperty().get() + "\n" + decoded);
+                    textfieldChat.appendText("\n" + decoded);
                 }
                 theSocket.close();
             }
