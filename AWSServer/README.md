@@ -1,2 +1,2 @@
-# se3313-2018-lab4
-SE3313 2018 Lab 4
+# TCP Server
+The server was hosting on an AWS EC3 instance.
